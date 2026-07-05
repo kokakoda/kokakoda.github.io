@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Webs Street — coming soon</title>
+<meta name="description" content="Webs Street is opening soon. Rent your address on the web — a memorable subdomain, your own DNS, email forwarding. Join the waitlist.">
+<meta name="theme-color" content="#0d7a3a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Webs Street — coming soon">
+<meta property="og:description" content="Rent your address on the web. Join the waitlist.">
+<meta property="og:image" content="/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Crect width='160' height='160' rx='34' fill='%230d7a3a'/%3E%3Crect x='22' y='54' width='116' height='52' rx='9' fill='none' stroke='%23fff' stroke-width='7'/%3E%3Ctext x='80' y='93' text-anchor='middle' font-family='sans-serif' font-size='32' font-weight='700' fill='%23fff'%3EST%3C/text%3E%3C/svg%3E">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0a0e1c;color:#e7ecf5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.wrap{max-width:560px;text-align:center}
+.sign{margin:0 auto 34px;filter:drop-shadow(0 12px 30px rgba(0,0,0,.5))}
+h1{font-size:30px;font-weight:700;margin-bottom:10px}
+h1 .d{color:#2fbf71}
+.tag{color:#9aa4bd;font-size:17px;margin-bottom:6px}
+.pitch{color:#7b83a8;font-size:14.5px;line-height:1.6;margin:18px auto 30px;max-width:460px}
+.soon{display:inline-block;background:#0f2416;color:#2fbf71;border:1px solid #1f5a34;border-radius:20px;padding:5px 14px;font-size:12.5px;font-weight:600;letter-spacing:1px;margin-bottom:26px}
+form{display:flex;gap:8px;max-width:420px;margin:0 auto}
+input{flex:1;padding:13px 14px;border-radius:9px;border:1px solid #2a2f45;background:#111726;color:#fff;font-size:15px}
+input:focus{outline:none;border-color:#2fbf71}
+button{padding:13px 20px;border:none;border-radius:9px;background:#13a050;color:#fff;font-weight:600;font-size:15px;cursor:pointer}
+button:hover{background:#0f8a43}
+button:disabled{opacity:.6;cursor:default}
+.msg{margin-top:14px;font-size:14px;min-height:20px}
+.msg.ok{color:#2fbf71}.msg.err{color:#ff8a8a}
+.teaser{margin-top:34px;color:#5b6180;font-size:13px}
+.teaser b{color:#c7cadb}
+.foot{margin-top:30px;font-size:12px}
+.foot a{color:#5b6180;text-decoration:none;margin:0 8px}
+.foot a:hover{color:#9aa4bd}
+</style></head><body>
+<div class="wrap">
+  <svg class="sign" width="260" height="104" viewBox="0 0 240 96" aria-label="Webs Street">
+    <rect x="10" y="30" width="222" height="46" rx="8" fill="#000" opacity="0.28"/>
+    <rect x="6" y="24" width="222" height="46" rx="8" fill="#0f8a43" stroke="#0a5c2c" stroke-width="2"/>
+    <rect x="12" y="30" width="210" height="34" rx="5" fill="none" stroke="#fff" stroke-width="2"/>
+    <circle cx="20" cy="47" r="2.6" fill="#0a5c2c"/><circle cx="208" cy="47" r="2.6" fill="#0a5c2c"/>
+    <text x="117" y="56" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#fff" letter-spacing="2">WEBS ST</text>
+  </svg>
+  <div class="soon">OPENING SOON</div>
+  <h1>webs<span class="d">.</span>st</h1>
+  <div class="tag">your address on the web</div>
+  <div class="pitch">Rent a memorable subdomain, point your own DNS, add email forwarding. No gatekeeping — your name is yours. We're wiring up the street signs now.</div>
+
+  <form id="wl" onsubmit="return join(event)">
+    <input id="em" type="email" placeholder="you@example.com" required autocomplete="email">
+    <button id="btn" type="submit">Notify me</button>
+  </form>
+  <div class="msg" id="msg"></div>
+
+  <div class="teaser">Claim names like <b>you.webs.st</b> · <b>shop.locke.rs</b></div>
+
+  <div class="foot"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+</div>
+<script>
+// self-host: posts to /waitlist. Hosting static pre-launch? point at a form service.
+const WAITLIST_URL = "/waitlist";
+async function join(e){
+  e.preventDefault();
+  const em=document.getElementById("em"), btn=document.getElementById("btn"), msg=document.getElementById("msg");
+  msg.className="msg"; msg.textContent="";
+  btn.disabled=true;
+  try{
+    const r=await fetch(WAITLIST_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:em.value.trim()})});
+    if(!r.ok) throw 0;
+    msg.className="msg ok"; msg.textContent="You're on the list — we'll email you at launch.";
+    em.value=""; btn.textContent="Done";
+  }catch(_){
+    msg.className="msg err";
+    msg.innerHTML='Could not reach the list — email <a href="mailto:hello@webs.st" style="color:#2fbf71">hello@webs.st</a> instead.';
+    btn.disabled=false;
+  }
+  return false;
+}
+</script>
+</body></html>
